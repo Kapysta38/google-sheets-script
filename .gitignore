@@ -1,3 +1,7 @@
 venv
 .idea
 *.json
+build
+*.exe
+dist
+*.spec
