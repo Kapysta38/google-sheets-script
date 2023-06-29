@@ -1,5 +1,6 @@
 import traceback
 import logging
+import datetime
 
 import yaml
 import pandas as pd
@@ -100,7 +101,7 @@ def parse_table(spreadsheet_name, worksheet_name):
         date = df.iloc[0, col]
         if all_col.all() and date:
             continue
-        if all_col.any() and date:
+        if date and datetime.datetime.strptime(f'{date}.{datetime.datetime.now().year}', '%d.%m.%Y').date() <= datetime.datetime.now().date():
             for row in range(1, df.shape[0]):
                 left_value = df.iloc[row, col - 1]
                 right_value = df.iloc[row, col]
@@ -132,4 +133,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    input('\n\nДля выхода из программы нажмите любую кнопку:')
+    # input('\n\nДля выхода из программы нажмите любую кнопку:')
