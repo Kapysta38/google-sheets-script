@@ -126,7 +126,7 @@ def main():
             write_to_google_sheet(result, table_name, worksheet_name)
         print('Скрипт завершил работу')
     except Exception as ex:
-        print("Произошла ошибка, отправьте фалй log.log разработчику")
+        print("Произошла ошибка, отправьте файл log.log разработчику")
         log.error({"error": ex, "traceback": traceback.format_exc()})
 
 
