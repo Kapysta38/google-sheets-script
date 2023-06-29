@@ -1,7 +1,18 @@
+import traceback
+import logging
+
 import yaml
 import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+
+file_log = logging.FileHandler('log.log', encoding='utf-8')
+logging.basicConfig(handlers=(file_log,),
+                    format='[%(asctime)s | %(levelname)s | %(name)s]: %(message)s',
+                    datefmt='%m.%d.%Y %H:%M:%S',
+                    level=logging.INFO)
+
+log = logging.getLogger("sheet-bot")
 
 config_file = yaml.safe_load(open("config.yml", encoding='utf-8'))
 
@@ -106,14 +117,19 @@ def parse_table(spreadsheet_name, worksheet_name):
 
 
 def main():
-    print('Начало работы скрипта')
-    table_name = config_file['table']['table_name']
-    worksheet_names = config_file['table']['worksheet_names']
-    for worksheet_name in worksheet_names:
-        result = parse_table(table_name, worksheet_name)
-        write_to_google_sheet(result, table_name, worksheet_name)
-    print('Скрипт завершил работу')
+    try:
+        print('Начало работы скрипта')
+        table_name = config_file['table']['table_name']
+        worksheet_names = config_file['table']['worksheet_names']
+        for worksheet_name in worksheet_names:
+            result = parse_table(table_name, worksheet_name)
+            write_to_google_sheet(result, table_name, worksheet_name)
+        print('Скрипт завершил работу')
+    except Exception as ex:
+        print("Произошла ошибка, отправьте фалй log.log разработчику")
+        log.error({"error": ex, "traceback": traceback.format_exc()})
 
 
 if __name__ == '__main__':
     main()
+    input('\n\nДля выхода из программы нажмите любую кнопку:')
