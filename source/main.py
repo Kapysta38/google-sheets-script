@@ -85,6 +85,7 @@ def write_to_google_sheet(dataframe, spreadsheet_name, worksheet_name):
                         "blue": 0.0
                     }})
     data = list(map(lambda x: list(map(lambda y: str(y).split('|')[0], x)), data))
+    data = list(map(lambda x:  list(map(lambda y: int(y) if y.isdigit() else y, x)), data))
 
     # Записываем данные в Google Таблицу
     worksheet.update(f'A1', data)
